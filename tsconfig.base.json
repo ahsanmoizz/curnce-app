@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ufa/shared/*": ["packages/shared/src/*"],
+      "@ufa/db": ["packages/db/src/index.ts"],
+      "@ufa/rules": ["packages/rules/src/index.ts"],
+      "@ufa/ingestion": ["packages/ingestion/src/index.ts"],
+      "@ufa/blockchain": ["packages/blockchain/src/index.ts"]
+    }
+  }
+}

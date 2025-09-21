@@ -1,0 +1,396 @@
+Auth
+
+POST /auth/login
+
+POST /auth/register
+
+GET /auth/me
+
+Users
+
+GET /users
+
+GET /users/:id
+
+PUT /users/:id
+Accounting
+
+POST https://example.com/v1/accounting/accounts
+
+POST https://example.com/v1/accounting/journal
+
+GET https://example.com/v1/accounting/ledger/:accountId
+
+Accounting Reports
+
+GET https://example.com/v1/accounting-reports/trial-balance?start=YYYY-MM-DD&end=YYYY-MM-DD[&tenantId=...]
+
+POST https://example.com/v1/accounting-reports/close-period
+
+Accounts
+
+POST https://example.com/v1/accounts
+
+GET https://example.com/v1/accounts
+
+AI
+
+POST https://example.com/v1/ai/classify
+
+POST https://example.com/v1/ai/compliance
+
+AI Legal
+
+POST https://example.com/v1/legal/query
+
+GET https://example.com/v1/legal/query/:id
+
+GET https://example.com/v1/legal/queries
+
+PATCH https://example.com/v1/legal/query/:id/resolve
+
+GET https://example.com/v1/legal/queries/summary
+
+GET https://example.com/v1/legal/queries/export
+Alerts
+
+GET https://example.com/v1/alerts
+
+Analytics
+
+GET https://example.com/v1/analytics/payments
+
+GET https://example.com/v1/analytics/ledger
+
+GET https://example.com/v1/analytics/compliance
+
+Accounts Payable (AP)
+
+POST https://example.com/v1/ap/vendors
+
+POST https://example.com/v1/ap/bills
+
+POST https://example.com/v1/ap/payments
+
+Accounts Receivable (AR)
+
+POST https://example.com/v1/ar/customers
+
+POST https://example.com/v1/ar/invoices
+
+POST https://example.com/v1/ar/payments
+
+Archive
+
+GET https://example.com/v1/archive/
+
+POST https://example.com/v1/archive/upload
+
+POST https://example.com/v1/archive/hash
+
+Audit
+
+GET https://example.com/v1/audit
+
+GET https://example.com/v1/audit/export
+
+Auth
+
+POST https://example.com/v1/auth/register
+
+POST https://example.com/v1/auth/login
+
+POST https://example.com/v1/auth/2fa/setup
+
+POST https://example.com/v1/auth/2fa/verify
+
+POST https://example.com/v1/auth/refresh
+
+GET https://example.com/v1/auth/me
+Blockchain
+
+POST http://localhost:3000/wallets
+
+GET http://localhost:3000/wallets
+
+POST http://localhost:3000/transfers
+
+POST http://localhost:3000/wallets/balance
+
+Classify
+
+POST http://localhost:3000/transaction
+
+Compliance
+
+GET http://localhost:3000/compliance/config
+
+POST http://localhost:3000/compliance/config
+
+GET http://localhost:3000/compliance/report
+
+GET http://localhost:3000/compliance/report/:period
+
+POST http://localhost:3000/compliance/classify
+
+POST http://localhost:3000/compliance/classify/tx/:txId
+
+POST http://localhost:3000/compliance/review
+
+POST http://localhost:3000/compliance/audit/:period
+
+POST http://localhost:3000/compliance/report
+
+GET http://localhost:3000/compliance/reports
+
+GET http://localhost:3000/compliance/report/id/:id
+
+POST http://localhost:3000/compliance/check/:paymentId
+
+Contracts
+
+POST http://localhost:3000/contracts/upload
+
+POST http://localhost:3000/contracts/:id/analyze
+
+GET http://localhost:3000/contracts/:id/analysis
+
+POST http://localhost:3000/contracts
+
+POST http://localhost:3000/contracts/:id/version
+
+POST http://localhost:3000/contracts/:id/sign
+
+PATCH http://localhost:3000/contracts/:id/status
+
+GET http://localhost:3000/contracts
+
+GET http://localhost:3000/contracts/:id
+
+Customers
+
+POST http://localhost:3000/
+
+GET http://localhost:3000/:id
+
+POST http://localhost:3000/:id/status
+
+POST http://localhost:3000/:id/documents/upload
+
+GET http://localhost:3000/
+
+Dashboard
+
+GET http://localhost:3000/overview
+Disputes
+
+POST http://localhost:3000/disputes/
+
+POST http://localhost:3000/disputes/:id/resolve
+
+GET http://localhost:3000/disputes/:id
+
+Docs
+
+POST http://localhost:3000/docs/upload
+
+GET http://localhost:3000/docs/:id
+
+Exports
+
+GET http://localhost:3000/exports/payments
+
+GET http://localhost:3000/exports/ledger
+
+GET http://localhost:3000/exports/audit
+
+Funds
+
+POST http://localhost:3000/funds/transfer
+
+GET http://localhost:3000/funds/status/:id
+
+Ingestion
+
+POST http://localhost:3000/ingestion/bank-csv
+
+POST http://localhost:3000/ingestion/confirm
+
+POST http://localhost:3000/ingestion/classify
+
+Ledger
+
+POST http://localhost:3000/ledger/transactions
+
+GET http://localhost:3000/ledger/transactions
+
+GET http://localhost:3000/ledger/stats
+
+GET http://localhost:3000/ledger/export
+Notifications
+
+GET http://localhost:3000/notifications/
+
+PATCH http://localhost:3000/notifications/:id/read
+
+POST http://localhost:3000/notifications/test
+
+GET http://localhost:3000/notifications/channels
+
+POST http://localhost:3000/notifications/channels
+
+DELETE http://localhost:3000/notifications/channels/:id
+
+GET http://localhost:3000/notifications/logs
+
+POST http://localhost:3000/notifications/retry
+
+GET http://localhost:3000/notifications/summary
+
+GET http://localhost:3000/notifications/stats
+
+Payments
+
+POST http://localhost:3000/payments/intent
+
+GET http://localhost:3000/payments/:paymentId/status
+
+PATCH http://localhost:3000/payments/:paymentId/release
+
+PATCH http://localhost:3000/payments/:paymentId/refund
+
+POST http://localhost:3000/payments/:paymentId/force-cancel
+
+POST http://localhost:3000/payments/:paymentId/freeze
+
+GET http://localhost:3000/payments/
+
+GET http://localhost:3000/payments/summary
+
+GET http://localhost:3000/payments/stats
+
+GET http://localhost:3000/payments/export
+
+Payroll
+
+POST http://localhost:3000/payroll/employee
+
+POST http://localhost:3000/payroll/run
+
+Refunds
+
+POST http://localhost:3000/refunds/request
+
+POST http://localhost:3000/refunds/approve
+
+GET http://localhost:3000/refunds/:id
+
+PATCH http://localhost:3000/refunds/:id/approve
+
+PATCH http://localhost:3000/refunds/:id/release
+
+POST http://localhost:3000/refunds/seed
+
+GET http://localhost:3000/refunds/
+
+Reporting
+
+POST http://localhost:3000/reporting/generate
+
+GET http://localhost:3000/reporting/:id
+
+GET http://localhost:3000/reporting/balance-sheet
+
+GET http://localhost:3000/reporting/income-statement
+
+GET http://localhost:3000/reporting/cash-flow
+
+GET http://localhost:3000/reporting/budget-variance
+
+Reports
+
+GET http://localhost:3000/reports/ping
+
+GET http://localhost:3000/reports/trial-balance
+
+GET http://localhost:3000/reports/income-statement
+
+GET http://localhost:3000/reports/balance-sheet
+
+GET http://localhost:3000/reports/ledger-report
+
+GET http://localhost:3000/reports/payments-report
+
+GET http://localhost:3000/reports/compliance-report
+Rules
+
+GET http://localhost:3000/rules/
+
+POST http://localhost:3000/rules/
+
+Support
+
+POST http://localhost:3000/support/ticket
+
+POST http://localhost:3000/support/ticket/:id/message
+
+PATCH http://localhost:3000/support/ticket/:id/status
+
+GET http://localhost:3000/support/tickets
+
+GET http://localhost:3000/support/ticket/:id
+
+System
+
+GET http://localhost:3000/system/health
+
+Tax
+
+POST http://localhost:3000/tax/file
+
+POST http://localhost:3000/tax/pay
+
+GET http://localhost:3000/tax/returns
+
+Tenants
+
+POST http://localhost:3000/tenants/
+
+GET http://localhost:3000/tenants/me
+
+GET http://localhost:3000/tenants/:id
+
+PATCH http://localhost:3000/tenants/:id/status
+
+POST http://localhost:3000/tenants/:id/reset-secret
+
+GET http://localhost:3000/tenants/stats
+Tickets
+
+POST http://localhost:3000/tickets/
+
+POST http://localhost:3000/tickets/:id/reply
+
+GET http://localhost:3000/tickets/:id
+
+Treasury
+
+POST http://localhost:3000/treasury/bank-accounts
+
+GET http://localhost:3000/treasury/bank-accounts
+
+POST http://localhost:3000/treasury/forecast
+
+POST http://localhost:3000/treasury/payment-runs
+
+POST http://localhost:3000/treasury/payment-runs/:id/approve
+
+POST http://localhost:3000/treasury/payment-runs/:id/execute
+
+POST http://localhost:3000/treasury/collections/plan
+
+POST http://localhost:3000/treasury/collections/:id/receive
+
+POST http://localhost:3000/treasury/bank/import
+
+POST http://localhost:3000/treasury/bank/:statementId/reconcile/auto 

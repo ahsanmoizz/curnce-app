@@ -1,0 +1,60 @@
+# Simple, safe rules DSL (no eval)
+version: 1
+namespace: rbi_fema
+
+defaults:
+  # Allowed currency for domestic INR flows
+  allowedDomesticCurrency: INR
+  largeAmountThreshold: 1000000 # paise for INR or smallest unit of currency if consistent
+
+rules:
+  # 1) Non-INR payments need registration/approval → manual review
+  - id: FOREX_ONLY_ALLOWED_IF_REGISTERED
+    description: "Non-INR transactions require registration/approval"
+    severity: medium
+    action: review # review|fail|pass
+    when:
+      all:
+        - path: currency
+          op: neq
+          value: "{{ defaults.allowedDomesticCurrency }}"
+    notes: "Non-INR transaction detected. Verify FEMA eligibility/registration."
+
+  # 2) Large transactions must be reported → manual review
+  - id: REPORT_LARGE_TX_TO_RBI
+    description: "Large transaction threshold exceeded"
+    severity: high
+    action: review
+    when:
+      all:
+        - path: amount
+          op: gt
+          value: "{{ defaults.largeAmountThreshold }}"
+    notes: "Amount exceeds internal threshold; report/verify per RBI guidelines."
+
+  # 3) Example hard fail: blocked country (if you track country on payer/payee)
+  - id: BLOCKED_COUNTRY
+    description: "Counterparty country in blocked list"
+    severity: critical
+    action: fail
+    when:
+      any:
+        - path: payer.country
+          op: in
+          value: ["IR", "KP"]
+        - path: payee.country
+          op: in
+          value: ["IR", "KP"]
+    notes: "Blocked geography; do not release."
+
+  # 4) Sanity rule: amount must be > 0
+  - id: AMOUNT_POSITIVE
+    description: "Amount must be positive"
+    severity: medium
+    action: fail
+    when:
+      all:
+        - path: amount
+          op: lte
+          value: 0
+    notes: "Invalid payment amount."

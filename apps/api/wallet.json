@@ -1,0 +1,1 @@
+{"message":"\nInvalid `prisma.wallet.create()` invocation in\nE:\\Accounting Automation System\\universal-finance-ai\\apps\\api\\src\\module\\blockchain\\blockchain.router.ts:53:40\n\n  50   tenant: { connect: { id: user.tenantId } },\n  51 };\n  52 \n→ 53 const wallet = await prisma.wallet.create(\nUnique constraint failed on the fields: (`address`)"}

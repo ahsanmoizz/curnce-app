@@ -1,0 +1,16 @@
+{
+  "name": "ufa-escrow-truffle",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "compile": "truffle compile",
+    "migrate:dev": "truffle migrate --reset --network development",
+    "migrate:sepolia": "truffle migrate --reset --network sepolia"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.9.6",
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "dotenv": "^16.4.5",
+    "truffle": "^5.11.5"
+  }
+}

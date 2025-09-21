@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'api'
+    static_configs:
+      - targets: ['api:3000']
+
+  - job_name: 'admin'
+    static_configs:
+      - targets: ['admin:3000']
+
+  - job_name: 'client'
+    static_configs:
+      - targets: ['client:3000']
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres_exporter:9187']

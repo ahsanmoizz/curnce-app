@@ -1,0 +1,186 @@
+version: '3.8'
+
+services:
+  # ---- App Layer ----
+  api:
+    build: ./apps/api
+    expose:
+      - "3000"
+    env_file:
+      - ./apps/api/.env
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=api.example.com
+      - LETSENCRYPT_HOST=api.example.com
+      - LETSENCRYPT_EMAIL=you@example.com
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  admin:
+    build: ./apps/admin
+    expose:
+      - "3000"
+    env_file:
+      - ./apps/admin/.env
+    depends_on:
+      - api
+    environment:
+      - VIRTUAL_HOST=admin.example.com
+      - LETSENCRYPT_HOST=admin.example.com
+      - LETSENCRYPT_EMAIL=you@example.com
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  client:
+    build: ./apps/client
+    expose:
+      - "3000"
+    env_file:
+      - ./apps/client/.env
+    depends_on:
+      - api
+    environment:
+      - VIRTUAL_HOST=app.example.com
+      - LETSENCRYPT_HOST=app.example.com
+      - LETSENCRYPT_EMAIL=you@example.com
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: universal_finance
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d universal_finance"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  # ---- Reverse Proxy + SSL (from Day 32) ----
+  proxy:
+    image: jwilder/nginx-proxy
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: unless-stopped
+    depends_on:
+      - proxy
+    environment:
+      - DEFAULT_EMAIL=you@example.com
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+
+  # ---- Logging (ELK) ----
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - ./elk/esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.0
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"  # beats input
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.0
+    user: root
+    depends_on:
+      - logstash
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./elk/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    command: ["--strict.perms=false"]
+
+  # ---- Metrics (Prometheus + Grafana) ----
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3001:3000"
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres@db:5432/universal_finance?sslmode=disable"
+    depends_on:
+      - db
+    expose:
+      - "9187"
+
+  # ---- Automated DB Backups ----
+  pgbackups:
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=universal_finance
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SCHEDULE=@daily
+      - BACKUP_KEEP_DAYS=7
+      - BACKUP_KEEP_WEEKS=4
+      - BACKUP_KEEP_MONTHS=6
+      # optional compression tweak:
+      # - BACKUP_COMPRESSION=gzip
+    volumes:
+      - ./backups:/backups
+
+volumes:
+  db_data:

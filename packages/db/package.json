@@ -1,0 +1,27 @@
+{
+  "name": "@ufa/db",
+  "version": "0.0.1",
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "prisma db seed --schema=packages/db/schema.prisma"
+  },
+  "prisma": {
+  "seed": "ts-node --transpile-only prisma/seed.ts"
+},
+  "dependencies": {
+    "@prisma/client": "^5.17.0",
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "prisma": "^5.17.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^20.19.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

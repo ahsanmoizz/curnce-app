@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ufa
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+
+  minio:
+    image: minio/minio:RELEASE.2024-05-28T17-19-04Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports: ["9000:9000","9001:9001"]
+    volumes: [miniodata:/data]
+
+  ai:
+    build:
+      context: ../services/ai
+    container_name: ufa-ai
+    environment:
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_KEY=${S3_SECRET_KEY}
+      - S3_USE_SSL=${S3_USE_SSL}
+      - S3_MODELS_BUCKET=${S3_MODELS_BUCKET}
+      - MODEL_VERSION=v1
+      - EMBED_MODEL_NAME=sentence-transformers/all-MiniLM-L6-v2
+      - XGB_MODEL_KEY=classifier/xgb_model.json
+      - LABEL_MAP_KEY=classifier/labels.json
+      - TAX_MAP_KEY=classifier/tax_map.json
+    ports:
+      - "8000:8000"
+    depends_on:
+      - minio
+
+volumes:
+  pgdata:
+  miniodata:

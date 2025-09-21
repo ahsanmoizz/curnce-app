@@ -1,0 +1,9 @@
+{
+  "transactionId": "txn_123",
+  "description": "Test purchase at store",
+  "amount": 100.50,
+  "counterparty": "ACME Corp",
+  "branch": "New York",
+  "currency": "USD",
+  "country": "US"
+}

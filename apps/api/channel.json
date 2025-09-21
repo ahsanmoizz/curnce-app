@@ -1,0 +1,5 @@
+{ 
+  "type": "email", 
+  "target": "alerts@example.com", 
+  "enabled": true 
+} 
