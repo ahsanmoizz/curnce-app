@@ -2,9 +2,9 @@
   "name": "@ufa/api",
   "version": "0.0.1",
   "scripts": {
-  "dev": "ts-node src/main.ts",
-  "build": "tsc -p tsconfig.json",
-  "start": "node dist/main.js"
+    "start:dev": "node --max-old-space-size=4096 -r ts-node/register -r tsconfig-paths/register src/main.ts",
+    "start:prod": "node dist/main",
+    "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.864.0",
