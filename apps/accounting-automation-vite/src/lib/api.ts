@@ -1,5 +1,5 @@
 // src/lib/api.ts
-const BASE_URL ="https://curnce.com/api";
+const BASE_URL ="https://api.curnce.com";
 
 export async function api(
   path: string,
