@@ -23,22 +23,13 @@ export default function TwoFactorVerifyPage() {
       const preAuth = localStorage.getItem("preAuthToken");
       if (!preAuth) throw new Error("Missing pre-auth token");
 
-     const res = await api("/auth/2fa/verify", {
+     const data = await api("/auth/2fa/verify", {
   method: "POST",
   headers: {
-    "Content-Type": "application/json",
     Authorization: `Bearer ${preAuth}`,
   },
-   body: JSON.stringify({ code }),// ✅ stringify api.ts karega
+  body: JSON.stringify({ code }),
 });
-
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err?.error || "2FA verification failed");
-      }
-
-      const data = await res.json();
 
       const accessToken = data.accessToken ?? data.token ?? "";
       const refreshToken = data.refreshToken ?? "";
