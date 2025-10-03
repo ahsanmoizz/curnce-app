@@ -127,7 +127,7 @@ export default function RegisterPage() {
             <input
               type="text"
               name="country"
-              placeholder="Country (e.g. PK)"
+              placeholder="Country (e.g. IN)"
               value={form.country}
               onChange={handleChange}
               maxLength={2}
@@ -137,7 +137,7 @@ export default function RegisterPage() {
             <input
               type="text"
               name="currency"
-              placeholder="Currency (e.g. PKR)"
+              placeholder="Currency (e.g. INR)"
               value={form.currency}
               onChange={handleChange}
               className="w-full border border-gray-600 bg-gray-900 text-white px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
